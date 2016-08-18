@@ -1,9 +1,9 @@
-# TimeTracker #
+# SwiftBoard #
 
 It's an app to let the user able to manage tasks and log work for multiple company and projects.
 
 ##Requirements:##
-* Python 3.4
+* Python 3.5
 
 
 ## Install Requirements ##
