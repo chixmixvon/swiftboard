@@ -1,0 +1,39 @@
+<div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <a class="navbar-brand" ui-sref="dashboard" href="#">SwiftBoard</a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li>
+                <a ui-sref="dashboard" href="#">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="#">Profile</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+</div>
+<!-- /.container -->
+
+
+<script type="text/ng-template" id="modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">I'm a modal!</h3>
+    </div>
+    <div class="modal-body">
+        <ul>
+            <li ng-repeat="item in items">
+                <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+            </li>
+        </ul>
+        Selected: <b>{{ selected.item }}</b>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

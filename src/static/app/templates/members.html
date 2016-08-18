@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title">{{ ProjectServices.project.name}} Members</h4>
+</div>
+
+<div class="modal-body">
+    <form class="form-inline" ng-submit="ctrl.submit()">
+      <div class="form-group">
+        <input type="email" class="form-control" ng-model="ctrl.form.user" placeholder="Email" ng-required="true">
+      </div>
+      
+      <div class="form-group">
+        <select name="permission" ng-model="ctrl.form.permission" ng-options="option.id as option.name for option in ctrl.permissions" ng-required="true" convert-to-number class="form-control">
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Send invitation</button>
+    </form>
+
+    <hr />
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="member in ProjectServices.members ">
+        {{ member.email }}
+
+        <select name="permission-{{ member.id }}" ng-init="member.selected=member.permission" ng-model="member.selected" ng-options="option.id as option.name for option in ctrl.permissions" ng-required="true" convert-to-number class="pull-right" ng-change="ProjectServices.change_permission(member)">
+        </select>
+      </li>
+    </ul>
+</div>

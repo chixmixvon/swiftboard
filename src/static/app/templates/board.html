@@ -1,0 +1,97 @@
+<h1 class="page-header">
+    {{ ProjectServices.project.name }} Board
+
+    <div class="btn-group pull-right" role="group">
+        <a href="#" class="btn btn-default" ng-click="ProjectServices.settings()">Settings</a>
+        <a href="#" class="btn btn-default" ng-click="ProjectServices.project_members()">Members</a>
+        <button type="button" class="btn btn-danger">Delete</button>
+    </div>
+</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <h3>
+            BackLog
+        </h3>
+        <ul ui-sortable="sortableOptions" class="apps-container list-group" ng-model="TaskServices.backlogs">
+            <li class="list-group-item" ng-repeat="item in TaskServices.backlogs" ng-click="TaskServices.preview(item)">
+                {{ item.title }}
+                <!-- make directive for this -->
+                <span ng-if="item.assignee">
+                    <span class="label label-default">{{ item.assignee_initial }}</span>
+                </span>
+            </li>
+        </ul>
+
+        <button type="button" class="btn btn-default btn-block" ng-click="TaskServices.create(status=0)">Add Task</button>
+    </div>
+
+    <div class="col-md-3">
+        <h3>
+            Todo
+        </h3>
+        <ul ui-sortable="sortableOptions" class="apps-container list-group" ng-model="TaskServices.todos">
+            <li class="list-group-item" ng-repeat="item in TaskServices.todos" ng-click="TaskServices.preview(item)">
+                {{ item.title }}
+                <!-- make directive for this -->
+                <span ng-if="item.assignee">
+                    <span class="label label-default">{{ item.assignee_initial }}</span>
+                </span>
+            </li>
+        </ul>
+
+        <button type="button" class="btn btn-default btn-block" ng-click="TaskServices.create(status=1)">Add Task</button>
+    </div>
+    
+    <div class="col-md-2">
+        <h3>
+            In Progress
+        </h3>
+        <ul ui-sortable="sortableOptions" class="apps-container list-group " ng-model="TaskServices.progress">
+            <li class="list-group-item" ng-repeat="item in TaskServices.progress" ng-click="TaskServices.preview(item)">
+                {{ item.title }}
+                <!-- make directive for this -->
+                <span ng-if="item.assignee">
+                    <span class="label label-default">{{ item.assignee_initial }}</span>
+                </span>
+            </li>
+        </ul>
+
+        <button type="button" class="btn btn-default btn-block" ng-click="TaskServices.create(status=2)">Add Task</button>
+    </div>
+    
+    <div class="col-md-2">
+        <h3>
+            Resolved
+        </h3>
+        <ul ui-sortable="sortableOptions" class="apps-container list-group" ng-model="TaskServices.resolved">
+            <li class="list-group-item" ng-repeat="item in TaskServices.resolved" ng-click="TaskServices.preview(item)">
+                {{ item.title }}
+                <!-- make directive for this -->
+                <span ng-if="item.assignee">
+                    <span class="label label-default">{{ item.assignee_initial }}</span>
+                </span>
+            </li>
+        </ul>
+
+        <button type="button" class="btn btn-default btn-block" ng-click="TaskServices.create(status=3)">Add Task</button>
+    </div>
+
+    <div class="col-md-2">
+        <h3>
+            Closed
+        </h3>
+        <ul ui-sortable="sortableOptions" class="apps-container list-group" ng-model="TaskServices.closed">
+            <li class="list-group-item" ng-repeat="item in TaskServices.closed" ng-click="TaskServices.preview(item)">
+                {{ item.title }}
+                <!-- make directive for this -->
+                <span ng-if="item.assignee">
+                    <span class="label label-default">{{ item.assignee_initial }}</span>
+                </span>
+            </li>
+        </ul>
+
+        <button type="button" class="btn btn-default btn-block" ng-click="TaskServices.create(status=4)">Add Task</button>
+    </div>
+    
+</div>

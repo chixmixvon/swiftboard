@@ -1,0 +1,12 @@
+{
+  "name": "timetracker",
+  "description": "timetracker dependencies.",
+  "dependencies": {
+    "angular": "1.5.8",
+    "angular-bootstrap": "~2.0.2",
+    "angular-ui-router": "~0.3.1",
+    "angular-ui-sortable": "~0.14.3",
+    "bootstrap": "~3.3.6",
+    "jquery": "1.9.1 - 2"
+  }
+}

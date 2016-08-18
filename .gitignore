@@ -1,0 +1,8 @@
+# Ignore directories
+env/
+
+# Ignored files
+*.pyc
+media/
+.env
+src/static/bower_components/

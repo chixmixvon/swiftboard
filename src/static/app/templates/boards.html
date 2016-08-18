@@ -1,0 +1,25 @@
+<div class="row">
+
+    <h1 class="page-header">Boards <a href="#" class="btn btn-primary pull-right" ng-click="ProjectServices.create()">New Board</a></h1>
+
+    <table class="table table-striped">
+        <tr>
+            <td class="col-md-6">Board</td>
+            <td>Members</td>
+            <td>Backlog</td>
+            <td>In Progress</td>
+            <td>Resolved</td>
+            <td>Closed</td>
+        </tr>
+
+        <tr ng-repeat="project in ProjectServices.projectsList|orderBy:'-created'">
+            <td><a ui-sref="board({projectId:project.id})" href="#">{{ project.name }}</a></td>
+            <td>Member</td>
+            <td>Backlog</td>
+            <td>In Progress</td>
+            <td>Resolved</td>
+            <td>Closed</td>
+        </tr>
+    </table>
+
+</div>
