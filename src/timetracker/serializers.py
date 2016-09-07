@@ -83,6 +83,7 @@ class TaskLogSerializer(serializers.ModelSerializer):
 
 
 class TaskCommentSerializer(serializers.ModelSerializer):
+    comment_by = serializers.CharField(required=False)
 
     class Meta:
         model = models.TaskComment

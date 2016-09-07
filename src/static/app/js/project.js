@@ -7,6 +7,7 @@
         ])
         .factory('ProjectServices', ProjectServices)
         .factory('TaskServices', TaskServices)
+        .factory('CommentServices', CommentServices)
         .controller('ProjectController', ProjectController)
         .controller('ProjectDetailController', ProjectDetailController)
         .directive('contenteditable', contenteditable)
@@ -235,7 +236,7 @@
         return service;
     }
 
-    function TaskServices($http, $rootScope, $uibModal, $state, $stateParams, API_URL, TEMPLATE_URL, ProjectServices) {
+    function TaskServices($http, $rootScope, $uibModal, $state, $stateParams, API_URL, TEMPLATE_URL, ProjectServices, CommentServices) {
         var service = {
             create: create,
             tasks: undefined,
@@ -336,8 +337,9 @@
             $uibModal.open({
                 templateUrl: TEMPLATE_URL + 'task.form.html',
                 controllerAs: 'ctrl',
-                controller: function($scope, $rootScope, $uibModalInstance, ProjectServices) {
+                controller: function($scope, $rootScope, $stateParams, $uibModalInstance, ProjectServices, CommentServices) {
                     // add null object to members
+                    var projectId = $stateParams.projectId
                     ProjectServices.members.unshift({'name': 'Unassigned'});
                     $scope.ProjectServices = ProjectServices;
                     var self = this;
@@ -345,19 +347,51 @@
                     self.form = angular.copy(task);
                     self.assignee = ProjectServices.getMember(self.form.assignee);
 
+                    CommentServices.get(projectId, task.id).then(function(resp){
+                        self.comments = resp.data;
+                    })
+
                     self.edit = function() {
                         // open an edit form
                         self.activeForm = true;
-                    }
+                    };
 
                     self.submit = function() {
                         // update task and return to preview section
                         service.update(self.form);
                         updateTask(self.form);
                         self.activeForm = false;
+                    };
+
+                    self.postComment = function(data) {
+                        // allow user to post a comment
+                        CommentServices.post(projectId, task.id, data).then(function(resp){
+                            self.comments.unshift(resp.data);
+                            data = {};
+                        });
                     }
                 }
             });
+        }
+
+        return service;
+    }
+
+    function CommentServices($http, $uibModal, API_URL, TEMPLATE_URL) {
+        var service = {
+            post: post,
+            get:get
+        }
+
+        function post(projectId, taskId, data) {
+            // post comment to a tasks
+            data['task'] = taskId
+            return $http.post(API_URL + 'projects/' + projectId + '/tasks/' + taskId + '/comments/', data);
+        }
+
+        function get(projectId, taskId) {
+            // get task comments
+            return $http.get(API_URL + 'projects/' + projectId + '/tasks/' + taskId + '/comments/');
         }
 
         return service;

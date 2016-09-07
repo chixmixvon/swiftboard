@@ -69,10 +69,12 @@ class TaskCommentViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_create(self, serializers):
-        serializers.save(comment_by=self.request.user)
+        task = models.Task.objects.get(id=self.kwargs['task_pk'])
+        serializers.save(comment_by=self.request.user, task=task)
 
     def perform_update(self, serializers):
-        serializers.save(comment_by=self.request.user)
+        task = models.Task.objects.get(id=self.kwargs['task_pk'])
+        serializers.save(comment_by=self.request.user, task=task)
 
     def destroy(self, request):
         """Allow user to delete created comment
