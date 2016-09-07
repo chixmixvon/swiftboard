@@ -60,9 +60,6 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 
 class TaskCommentViewSet(viewsets.ModelViewSet):
-    """TODO:
-        - prevent user to delete, put and patch not owned comment
-    """
     queryset = models.TaskComment.objects.all()
     serializer_class = serializers.TaskCommentSerializer
     permission_classes = (permissions.ProjectMemberPermission,)
@@ -71,5 +68,19 @@ class TaskCommentViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(task__id=self.kwargs['task_pk'], task__project__id=self.kwargs['project_pk'])
         return queryset
 
-    def perform_create(self, serializers, *args, **kwargs):
+    def perform_create(self, serializers):
         serializers.save(comment_by=self.request.user)
+
+    def perform_update(self, serializers):
+        serializers.save(comment_by=self.request.user)
+
+    def destroy(self, request):
+        """Allow user to delete created comment
+        """
+        instance = self.get_object()
+
+        if instance.comment_by == self.request.user:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

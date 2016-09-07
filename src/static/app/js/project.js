@@ -26,6 +26,7 @@
         // task
         TaskServices.getTasks(projectId);
         $rootScope.TaskServices = TaskServices;
+        $rootScope.ProjectServices = ProjectServices;
 
         $scope.sortableOptions = {
             connectWith: ".apps-container",
@@ -66,11 +67,12 @@
             detail: detail,
             list: list,
             project: undefined,
-            members: undefined,
+            members: [],
             project_members: project_members,
             change_permission: change_permission,
             memberInitial: memberInitial,
-            updateMembers: updateMembers
+            updateMembers: updateMembers,
+            getMember: getMember
         }
 
         function create() {
@@ -220,6 +222,16 @@
             });
         }
 
+        function getMember(userId) {
+            if (service.members) {
+                return service.members.filter(function(user) {
+                    if (user.user_id == userId) {
+                        return user;
+                    }
+                })[0];
+            }
+        }
+
         return service;
     }
 
@@ -296,6 +308,9 @@
                 controller: function($scope, $rootScope, $uibModalInstance) {
                     var self = this;
                     self.form = {};
+                    self.activeForm = true;
+                    // add null object to members
+                    ProjectServices.members.unshift({'name': 'Unassigned'});
 
                     self.submit = function() {
                         var projectId = $rootScope.ProjectServices.project.id
@@ -322,15 +337,24 @@
                 templateUrl: TEMPLATE_URL + 'task.form.html',
                 controllerAs: 'ctrl',
                 controller: function($scope, $rootScope, $uibModalInstance, ProjectServices) {
-                    var self = this;
-                    self.assignee;
-                    self.form = angular.copy(task);
+                    // add null object to members
+                    ProjectServices.members.unshift({'name': 'Unassigned'});
                     $scope.ProjectServices = ProjectServices;
+                    var self = this;
+                    self.activeForm = false;
+                    self.form = angular.copy(task);
+                    self.assignee = ProjectServices.getMember(self.form.assignee);
+
+                    self.edit = function() {
+                        // open an edit form
+                        self.activeForm = true;
+                    }
+
                     self.submit = function() {
-                        // task task list
+                        // update task and return to preview section
                         service.update(self.form);
                         updateTask(self.form);
-                        $uibModalInstance.dismiss();
+                        self.activeForm = false;
                     }
                 }
             });

@@ -19,6 +19,7 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
     user_id = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
+    initial_avatar = serializers.SerializerMethodField()
 
     def get_email(self, instance):
         """Return user email
@@ -38,6 +39,18 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
             return '{} {}'.format(instance.user.first_name, instance.user.last_name)
         return instance.user.email
 
+    def get_initial_avatar(self, instance):
+        """Return user email
+        TODO: Add better function
+        """
+
+        try:
+            if instance.user.first_name:
+                return '{} {}'.format(instance.user.first_name[0], instance.user.last_name[0])
+            return instance.user.email[0]
+        except AttributeError:
+            return '?'
+
     def validate_user(self, value):
         """Use email to add
         """
@@ -56,32 +69,6 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
 
     user = serializers.CharField(required=False)
-    assignee_name = serializers.SerializerMethodField()
-    assignee_initial = serializers.SerializerMethodField()
-
-    def get_assignee_name(self, instance):
-        """Return user email
-        TODO: Add better function
-        """
-
-        try:
-            if instance.assignee:
-                return '{} {}'.format(instance.assignee.first_name, instance.assignee.last_name)
-            return instance.assignee.email
-        except AttributeError:
-            return '?'
-
-    def get_assignee_initial(self, instance):
-        """Return user email
-        TODO: Add better function
-        """
-
-        try:
-            if instance.assignee:
-                return '{} {}'.format(instance.assignee.first_name[0], instance.assignee.last_name[0])
-            return instance.assignee.email[0]
-        except AttributeError:
-            return '?'
 
     class Meta:
         model = models.Task

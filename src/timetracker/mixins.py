@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from . import models
 
 
-class TimeTrackerMixin:
+class TimeTrackerMixin(object):
 
     def get_task(self, task_id):
         """Return task object
